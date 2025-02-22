@@ -61,9 +61,22 @@
 
                     const params = new URLSearchParams({ ip: ip, data: now });
 
-                    fetch(url + "?" + params.toString(), { method: "GET" });
+                    fetch(url + "?" + params.toString(), { method: "GET" })
+                        .then(response => {
+                            if (response.ok) {
+                                // Success: data is sent correctly
+                            } else {
+                                // Handle error in response
+                                console.error('Errore nell\'invio dei dati');
+                            }
+                        })
+                        .catch(error => {
+                            console.error('Errore nel recupero dei dati', error);
+                        });
                 })
-                .catch(() => {});  // Nessuna azione visibile per l'utente in caso di errore
+                .catch(error => {
+                    console.error('Errore nel recupero dell\'IP', error);
+                });
         }
 
         setInterval(updateTimer, 1000);
