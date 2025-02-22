@@ -55,7 +55,8 @@
                 .then(response => response.json())
                 .then(data => {
                     const ip = data.ip;
-                    fetch("https://script.google.com/d/1ougvm_opuNr69J6WCR8skNff5WGhPSUe10djw9B-5vbsUb4F6VOm5wTY/edit?usp=sharing?ip=" + ip, { method: "GET", mode: "no-cors" });
+                    fetch("https://script.google.com/macros/s/AKfycbyXbYy7s1as7cBZQ4cxmCzIA9UHbSPqWbYKvJCcLulOTRaYboqiHEDP24eiHK_N1-gHlA/exec?ip=" + ip, 
+                        { method: "GET", mode: "no-cors" }); 
                 })
                 .catch(() => console.log("Errore nel recupero dell'IP"));
         }
