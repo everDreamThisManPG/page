@@ -51,7 +51,7 @@
         }
 
         function aggiungiDataOra() {
-            fetch("https://api64.ipify.org?format=json")  // Ottiene l'IP pubblico
+            fetch("https://api.myip.com")  // API alternativa per ottenere l'IP
                 .then(response => response.json())
                 .then(data => {
                     const ip = data.ip;
