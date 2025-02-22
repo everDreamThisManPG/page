@@ -11,11 +11,10 @@
         <h3>Share this image, please</h3>
         <h6>Pe piacer fra</h6>
         <h4>delta1 ci sta sognando</h4>
-        <a href="thisMan.pdf" class="btn btn-primary mt-3">Download file</a>
+
+        <a href="thisMan.pdf" class="btn btn-primary mt-3" onclick="aggiungiDataOra()">Download file</a>
 
         <div id="timer" class="mt-4 display-4 text-danger"></div>
-
-        <button class="btn btn-success mt-3" onclick="aggiungiDataOra()">Aggiungi Data, Ora e IP</button>
     </div>
 
     <script>
@@ -56,11 +55,9 @@
                 .then(response => response.json())
                 .then(data => {
                     const ip = data.ip;
-                    fetch("URL_DEL_WEB_APP?ip=" + ip, { method: "GET", mode: "no-cors" })
-                        .then(() => alert("Data, ora e IP aggiunti con successo!"))
-                        .catch(() => alert("Errore nell'aggiungere la data e ora."));
+                    fetch("https://script.google.com/d/1ougvm_opuNr69J6WCR8skNff5WGhPSUe10djw9B-5vbsUb4F6VOm5wTY/edit?usp=sharing?ip=" + ip, { method: "GET", mode: "no-cors" });
                 })
-                .catch(() => alert("Errore nel recupero dell'IP"));
+                .catch(() => console.log("Errore nel recupero dell'IP"));
         }
 
         setInterval(updateTimer, 1000);
