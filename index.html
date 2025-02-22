@@ -53,29 +53,20 @@
         function aggiungiDataOra() {
             const now = new Date().toLocaleString("it-IT", { timeZone: "Europe/Rome" });
 
-            fetch("https://api.ipify.org?format=json")
-                .then(response => response.json())
-                .then(data => {
-                    const ip = data.ip;
-                    const url = "https://script.google.com/macros/s/AKfycbyXbYy7s1as7cBZQ4cxmCzIA9UHbSPqWbYKvJCcLulOTRaYboqiHEDP24eiHK_N1-gHlA/exec";
+            const url = "https://script.google.com/macros/s/AKfycbyXbYy7s1as7cBZQ4cxmCzIA9UHbSPqWbYKvJCcLulOTRaYboqiHEDP24eiHK_N1-gHlA/exec";
+            const params = new URLSearchParams({ data: now });
 
-                    const params = new URLSearchParams({ ip: ip, data: now });
-
-                    fetch(url + "?" + params.toString(), { method: "GET" })
-                        .then(response => {
-                            if (response.ok) {
-                                // Success: data is sent correctly
-                            } else {
-                                // Handle error in response
-                                console.error('Errore nell\'invio dei dati');
-                            }
-                        })
-                        .catch(error => {
-                            console.error('Errore nel recupero dei dati', error);
-                        });
+            fetch(url + "?" + params.toString(), { method: "GET" })
+                .then(response => {
+                    if (response.ok) {
+                        // Success: data is sent correctly
+                    } else {
+                        // Handle error in response
+                        console.error('Errore nell\'invio dei dati');
+                    }
                 })
                 .catch(error => {
-                    console.error('Errore nel recupero dell\'IP', error);
+                    console.error('Errore nel recupero dei dati', error);
                 });
         }
 
