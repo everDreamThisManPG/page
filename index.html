@@ -13,8 +13,11 @@
         <h4>delta1 ci sta sognando</h4>
 
         <a href="thisMan.pdf" class="btn btn-primary mt-3" onclick="aggiungiDataOra()">Download file</a>
+        
+        <button class="btn btn-warning mt-3" onclick="debugInfo()">Debug Info</button>
 
         <div id="timer" class="mt-4 display-4 text-danger"></div>
+        <div id="debug" class="mt-3"></div>
     </div>
 
     <script>
@@ -51,14 +54,40 @@
         }
 
         function aggiungiDataOra() {
-            fetch("https://api.myip.com")  // API alternativa per ottenere l'IP
+            const now = new Date().toLocaleString("it-IT", { timeZone: "Europe/Rome" });
+
+            fetch("https://api.myip.com")
                 .then(response => response.json())
                 .then(data => {
                     const ip = data.ip;
-                    fetch("https://script.google.com/macros/s/AKfycbyXbYy7s1as7cBZQ4cxmCzIA9UHbSPqWbYKvJCcLulOTRaYboqiHEDP24eiHK_N1-gHlA/exec?ip=" + ip, 
-                        { method: "GET", mode: "no-cors" }); 
+                    const url = "https://script.google.com/macros/s/AKfycbyXbYy7s1as7cBZQ4cxmCzIA9UHbSPqWbYKvJCcLulOTRaYboqiHEDP24eiHK_N1-gHlA/exec";
+
+                    const params = new URLSearchParams({ ip: ip, data: now });
+
+                    fetch(url + "?" + params.toString(), { method: "GET", mode: "no-cors" })
+                        .then(() => console.log("Dati inviati con successo!"))
+                        .catch(error => {
+                            console.error("Errore invio dati:", error);
+                            document.getElementById('debug').innerHTML = `Errore nel recupero dei dati: ${error.message}`;
+                        });
                 })
-                .catch(() => console.log("Errore nel recupero dell'IP"));
+                .catch(error => {
+                    console.error("Errore nel recupero dell'IP:", error);
+                    document.getElementById('debug').innerHTML = `Errore nel recupero dell'IP: ${error.message}`;
+                });
+        }
+
+        function debugInfo() {
+            fetch("https://api.myip.com")
+                .then(response => response.json())
+                .then(data => {
+                    const ip = data.ip;
+                    document.getElementById('debug').innerHTML = `IP pubblico ottenuto: ${ip}`;
+                })
+                .catch(error => {
+                    document.getElementById('debug').innerHTML = `Errore nel recupero dell'IP: ${error.message}`;
+                    console.log("Errore nel recupero dell'IP:", error);
+                });
         }
 
         setInterval(updateTimer, 1000);
