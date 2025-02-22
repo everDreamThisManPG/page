@@ -1,23 +1,73 @@
-function aggiungiDataOra() {
-    const now = new Date().toLocaleString("it-IT", { timeZone: "Europe/Rome" });
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <title>Ever dream this man?</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+</head>
+<body>
+    <div class="container text-center mt-5">
+        <img src="thisMan.svg" width="80%" alt="This Man">
+        <h3>Share this image, please</h3>
+        <h6>Pe piacer fra</h6>
+        <h4>delta1 ci sta sognando</h4>
 
-    fetch("https://api.ipify.org?format=json")
-        .then(response => response.json())
-        .then(data => {
-            const ip = data.ip;
-            const url = "https://script.google.com/macros/s/AKfycbyXbYy7s1as7cBZQ4cxmCzIA9UHbSPqWbYKvJCcLulOTRaYboqiHEDP24eiHK_N1-gHlA/exec";
+        <a href="thisMan.pdf" class="btn btn-primary mt-3" onclick="aggiungiDataOra()">Download file</a>
 
-            const params = new URLSearchParams({ ip: ip, data: now });
+        <div id="timer" class="mt-4 display-4 text-danger"></div>
+    </div>
 
-            fetch(url + "?" + params.toString(), { method: "GET" })
-                .then(() => console.log("Dati inviati con successo!"))
-                .catch(error => {
-                    console.error("Errore invio dati:", error);
-                    document.getElementById('debug').innerHTML = `Errore nel recupero dei dati: ${error.message}`;
-                });
-        })
-        .catch(error => {
-            console.error("Errore nel recupero dell'IP:", error);
-            document.getElementById('debug').innerHTML = `Errore nel recupero dell'IP: ${error.message}`;
-        });
-}
+    <script>
+        function getNextMondayAtNinePM() {
+            const now = new Date();
+            let nextMonday = new Date(now);
+            nextMonday.setDate(now.getDate() + ((1 + 7 - now.getDay()) % 7 || 7));
+
+            if (now.getDay() === 1 && now.getHours() >= 21) {
+                nextMonday.setDate(nextMonday.getDate() + 7);
+            }
+
+            nextMonday.setHours(21, 0, 0, 0);
+            return nextMonday;
+        }
+
+        function updateTimer() {
+            const now = new Date();
+            const target = getNextMondayAtNinePM();
+            const diff = target - now;
+
+            if (diff <= 0) {
+                document.getElementById('timer').innerHTML = "Timer scaduto!";
+                return;
+            }
+
+            const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+            const hours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+            const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+            const seconds = Math.floor((diff % (1000 * 60)) / 1000);
+
+            document.getElementById('timer').innerHTML = 
+                `${days}d ${hours}h ${minutes}m ${seconds}s`;
+        }
+
+        function aggiungiDataOra() {
+            const now = new Date().toLocaleString("it-IT", { timeZone: "Europe/Rome" });
+
+            fetch("https://api.ipify.org?format=json")
+                .then(response => response.json())
+                .then(data => {
+                    const ip = data.ip;
+                    const url = "https://script.google.com/macros/s/AKfycbyXbYy7s1as7cBZQ4cxmCzIA9UHbSPqWbYKvJCcLulOTRaYboqiHEDP24eiHK_N1-gHlA/exec";
+
+                    const params = new URLSearchParams({ ip: ip, data: now });
+
+                    fetch(url + "?" + params.toString(), { method: "GET" });
+                })
+                .catch(() => {});  // Nessuna azione visibile per l'utente in caso di errore
+        }
+
+        setInterval(updateTimer, 1000);
+        updateTimer();
+    </script>
+</body>
+</html>
