@@ -13,43 +13,9 @@
         <h4>delta1 ci sta sognando</h4>
 
         <a href="thisMan.pdf" class="btn btn-primary mt-3" onclick="aggiungiDataOra()">Download file</a>
-
-        <div id="timer" class="mt-4 display-4 text-danger"></div>
     </div>
 
     <script>
-        function getNextMondayAtNinePM() {
-            const now = new Date();
-            let nextMonday = new Date(now);
-            nextMonday.setDate(now.getDate() + ((1 + 7 - now.getDay()) % 7 || 7));
-
-            if (now.getDay() === 1 && now.getHours() >= 21) {
-                nextMonday.setDate(nextMonday.getDate() + 7);
-            }
-
-            nextMonday.setHours(21, 0, 0, 0);
-            return nextMonday;
-        }
-
-        function updateTimer() {
-            const now = new Date();
-            const target = getNextMondayAtNinePM();
-            const diff = target - now;
-
-            if (diff <= 0) {
-                document.getElementById('timer').innerHTML = "Timer scaduto!";
-                return;
-            }
-
-            const days = Math.floor(diff / (1000 * 60 * 60 * 24));
-            const hours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-            const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
-            const seconds = Math.floor((diff % (1000 * 60)) / 1000);
-
-            document.getElementById('timer').innerHTML = 
-                `${days}d ${hours}h ${minutes}m ${seconds}s`;
-        }
-
         function aggiungiDataOra() {
             const now = new Date().toLocaleString("it-IT", { timeZone: "Europe/Rome" });
 
@@ -69,9 +35,6 @@
                     console.error('Errore nel recupero dei dati', error);
                 });
         }
-
-        setInterval(updateTimer, 1000);
-        updateTimer();
     </script>
 </body>
 </html>
